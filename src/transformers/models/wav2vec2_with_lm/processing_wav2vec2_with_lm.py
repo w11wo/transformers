@@ -195,7 +195,10 @@ class Wav2Vec2ProcessorWithLM(ProcessorMixin):
         # we need to make sure that all of the tokenizer's except the special tokens
         # are present in the decoder's alphabet. Retrieve missing alphabet token
         # from decoder
-        tokenizer_vocab_list = list(tokenizer.get_vocab().keys())
+        if tokenizer.target_lang is not None:
+            tokenizer_vocab_list = list(tokenizer.get_vocab()[tokenizer.target_lang].keys())
+        else:
+            tokenizer_vocab_list = list(tokenizer.get_vocab().keys())
 
         # replace special tokens
         for i, token in enumerate(tokenizer_vocab_list):
